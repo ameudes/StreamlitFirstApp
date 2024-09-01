@@ -21,6 +21,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     gfortran \
     gcc \
     g++ \
+    zlib1g \
+    zlib1g-dev \
     libcurl4-openssl-dev \
     libssl-dev \
     libxml2-dev \
@@ -51,7 +53,7 @@ WORKDIR /root/local/src
 RUN wget --timestamping https://cran.r-project.org/src/base/R-4/R-4.4.1.tar.gz
 RUN tar zxf R-4.4.1.tar.gz
 RUN cd R-4.4.1
-RUN ./configure
+RUN ./configure --without-x
 RUN make
 RUN make install
 
