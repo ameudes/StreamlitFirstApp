@@ -1,10 +1,15 @@
 FROM python:3.9.7-bullseye
 
-# Ajouter le dépôt CRAN pour installer une version plus récente de R
+# Installer les dépendances nécessaires pour ajouter des dépôts et des clés
 RUN apt-get update && apt-get install -y --no-install-recommends \
     software-properties-common \
-    && add-apt-repository 'deb https://cloud.r-project.org/bin/linux/debian bullseye-cran40/' \
-    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 'E298A3A825C0D65DFD57CBB651716619E084DAB9'
+    dirmngr \
+    gnupg \
+    ca-certificates
+
+# Ajouter le dépôt CRAN pour installer une version plus récente de R
+RUN add-apt-repository 'deb https://cloud.r-project.org/bin/linux/debian bullseye-cran40/' \
+    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 'B8F25A8A73EACF41'
 
 # Installer la version mise à jour de R
 RUN apt-get update && apt-get install -y --no-install-recommends \
