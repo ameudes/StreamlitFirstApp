@@ -37,12 +37,18 @@ RUN pip3 install --upgrade pip
 WORKDIR /root/local/src
 
 # Download and install R using the specified version from ENV
-RUN wget --timestamping https://cloud.r-project.org/src/base/R-4.1/R-4.1.0.tar.gz && \
-    tar zxf R-4.1.0.tar.gz && \
-    cd R-4.1.0 && \
-    ./configure --prefix=/root/local/4.1.0 && \
-    make && \
-    make install
+# update indices
+RUN apt update -qq
+# install two helper packages we need
+RUN apt install --no-install-recommends software-properties-common dirmngr
+# add the signing key (by Michael Rutter) for these repos
+# To verify key, run gpg --show-keys /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
+# Fingerprint: E298A3A825C0D65DFD57CBB651716619E084DAB9
+RUN wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+# add the R 4.0 repo from CRAN -- adjust 'focal' to 'groovy' or 'bionic' as needed
+RUN  add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+
+RUN apt install --no-install-recommends r-base
 
 # Set the installed R binary in the PATH
 ENV PATH="/root/local/${R_VERSION}/bin:${PATH}"
