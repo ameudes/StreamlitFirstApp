@@ -1,25 +1,13 @@
 FROM python:3.9.7-bullseye
-
-# Installer les dépendances nécessaires pour ajouter des dépôts et des clés
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    software-properties-common \
-    dirmngr \
-    gnupg \
-    ca-certificates
-
-# Ajouter le dépôt CRAN pour installer une version plus récente de R
-RUN add-apt-repository 'deb https://cloud.r-project.org/bin/linux/debian bullseye-cran40/' \
-    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 'B8F25A8A73EACF41'
-
-# Installer la version mise à jour de R
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    r-base=4.1.0-* \
-    r-base-dev=4.1.0-* \
+    r-base \
+    r-base-dev \
     libffi-dev \
     libssl-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+    
 # Définir la variable d'environnement R_HOME
 ENV R_HOME /usr/lib/R
 ENV PATH="${R_HOME}/bin:${PATH}"
@@ -40,6 +28,5 @@ WORKDIR app/
 COPY ./app .
 RUN python -m pip install --upgrade pip
 RUN python -m pip install -r requirements.txt
-
 EXPOSE 8501
 CMD ["streamlit", "run", "app.py"]
