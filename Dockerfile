@@ -60,12 +60,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libtool
 #Fin partie ajoutée
 
-RUN wget --timestamping https://cran.r-project.org/src/base/R-4/R-4.4.1.tar.gz
+
+#TELECHARGEMENT ET LISTE DES FICHIERS
+RUN wget --timestamping https://cran.r-project.org/src/base/R-4/R-4.4.1.tar.gz && ls -l
 RUN tar zxf R-4.4.1.tar.gz
 RUN cd R-4.4.1
 
-#Liste des éléments
-RUN tar zxf R-4.1.2.tar.gz && cd R-4.1.2 && ls -l
 
 RUN ./configure
 RUN make
