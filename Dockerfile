@@ -9,6 +9,9 @@ ENV TZ=Etc/UTC
 ENV R_VERSION=4.1.0
 ENV R_PAPERSIZE=letter
 
+# Add the docker user and create a home directory
+RUN useradd -m docker && usermod -aG staff docker
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
