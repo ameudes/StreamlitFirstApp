@@ -11,6 +11,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Définir la variable d'environnement R_HOME
 ENV R_HOME /usr/lib/R
+ENV PATH="${R_HOME}/bin:${PATH}"
+
+# Installer le package  directement via R
+RUN R -e "install.packages('randomForest', repos='http://cran.rstudio.com/')"
+
 
 WORKDIR app/
 
