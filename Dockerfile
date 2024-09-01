@@ -47,12 +47,14 @@ RUN pip3 install --upgrade pip
 WORKDIR /root/local/src
 
 # Download and install R using the specified version from ENV
+
 RUN wget --timestamping https://cran.r-project.org/src/base/R-4/R-4.4.1.tar.gz
 RUN tar zxf R-4.4.1.tar.gz
 RUN cd R-4.4.1
 RUN ./configure
 RUN make
 RUN make install
+
 
 # Set the installed R binary in the PATH
 ENV PATH="/root/local/${R_VERSION}/bin:${PATH}"
