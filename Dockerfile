@@ -3,6 +3,7 @@ FROM python:3.9.7-bullseye
 RUN apt-get update && apt-get install -y --no-install-recommends \
     r-base \
     r-base-dev \
+    r-cran-randomForest \
     libffi-dev \
     libssl-dev \
     && apt-get clean \
