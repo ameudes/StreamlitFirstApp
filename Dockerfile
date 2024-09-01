@@ -58,18 +58,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     autoconf \
     automake \
     libtool
+
+# Copier les fichiers source de R dans le conteneur
+COPY R /tmp/R-4.1.2
+
+# Compilation et installation de R à partir des sources locales
+RUN cd /tmp/R-4.1.2 && \
+    ./configure --prefix=/usr/local && \
+    make && \
+    make install
+
 #Fin partie ajoutée
 
 
-#TELECHARGEMENT ET LISTE DES FICHIERS
-RUN wget --timestamping https://cran.r-project.org/src/base/R-4/R-4.4.1.tar.gz && ls -l
-RUN tar zxf R-4.4.1.tar.gz
-RUN cd R-4.4.1
-
-
-RUN ./configure
-RUN make
-RUN make install
 
 
 # Set the installed R binary in the PATH
