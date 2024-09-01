@@ -57,23 +57,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libtool \
     gfortran \
     gcc \
-    readline-dev \
-    tzdata \
-    zlib1g \
-    zlib-dev \
-    bzip2 \
-    bzip2-dev \
-    make \
-    bzip2 \
-    bzip2-dev \
-    liblzma \
-    liblzma-dev \
-    lzma \
-    lzma-dev \
-    xz-dev \
-    pcre2 \
-    pcre2-dev \
-    libcurl 
+    libcurl    
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
     
 
 RUN wget https://cran.r-project.org/src/base/R-4/R-4.1.0.tar.gz
