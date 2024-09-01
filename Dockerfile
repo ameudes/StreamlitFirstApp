@@ -39,12 +39,12 @@ RUN wget --timestamping https://cloud.r-project.org/src/base/R-${R_VERSION%.*}/R
 # set the installed R bin in the PATH
 ENV PATH="/root/local/${R_VERSION}/bin:${PATH}"
 
+# install the randomForest package version 4.7-1.1
+RUN R -e "install.packages('https://cran.r-project.org/src/contrib/Archive/randomForest/randomForest_4.7-1.1.tar.gz', repos=NULL, type='source')"
+
 # install & run streamlit app
 COPY ./app .
 RUN python -m pip install --upgrade pip
 RUN python -m pip install -r requirements.txt
 EXPOSE 8501
 CMD ["streamlit", "run", "app.py"]
-
-# install the randomForest package version 4.7-1.1
-RUN R -e "install.packages('https://cran.r-project.org/src/contrib/Archive/randomForest/randomForest_4.7-1.1.tar.gz', repos=NULL, type='source')"
