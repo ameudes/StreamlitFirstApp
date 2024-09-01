@@ -25,6 +25,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl-dev \
     libxml2-dev \
     libreadline-dev \
+    lib32readline8 \
+    lib32readline-dev \
     make \
     pkg-config \
     python3 \
