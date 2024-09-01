@@ -37,6 +37,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     unzip \
     wget \
     zlib1g-dev \
+    tzdata \
  && rm -rf /var/lib/apt/lists/*
 
 # Upgrade pip
