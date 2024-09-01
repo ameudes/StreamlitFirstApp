@@ -1,6 +1,6 @@
 streamlit
 altair<5
-rpy2
+rpy2==3.5.1
 pandas
 sqlalchemy
 datetime
