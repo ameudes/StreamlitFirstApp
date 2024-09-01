@@ -12,16 +12,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ENV R_HOME /usr/lib/R
 ENV PATH="${R_HOME}/bin:${PATH}"
 
-RUN R --version
-RUN R -e "print('R is installed and working')"
+# Copier le package source local dans l'image Docker
+COPY randomForest_4.7-1.1.tar.gz /tmp/randomForest_4.7-1.1.tar.gz
 
-# Installer le package  directement via R
-RUN R -e "install.packages('randomForest', repos='http://cran.rstudio.com/')"
+# Installer le package R à partir du fichier source
+RUN R CMD INSTALL /tmp/randomForest_4.7-1.1.tar.gz
 
+# Nettoyer le fichier source pour garder l'image légère
+RUN rm /tmp/randomForest_4.7-1.1.tar.gz
 
 
 WORKDIR app/
-
 
 
 COPY ./app .
