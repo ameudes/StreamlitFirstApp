@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 
 # Set environment variables for R installation
-ENV R_VERSION=4.1.0
+ENV R_VERSION=4.4.1
 ENV R_PAPERSIZE=letter
 
 # Add the docker user and create a home directory
@@ -40,10 +40,10 @@ RUN pip3 install --upgrade pip
 WORKDIR /root/local/src
 
 # Download and install R using the specified version from ENV
-RUN wget --timestamping https://cloud.r-project.org/src/base/R-4.1/R-4.1.0.tar.gz && \
-    tar zxf R-4.1.0.tar.gz && \
-    cd R-4.1.0 && \
-    ./configure --prefix=/root/local/4.1.0 && \
+RUN wget --timestamping https://cloud.r-project.org/src/base/R-4.1/R-4.4.1.tar.gz && \
+    tar zxf R-4.4.1.tar.gz && \
+    cd R-4.4.1 && \
+    ./configure --prefix=/root/local/4.4.1 && \
     make && \
     make install
 
