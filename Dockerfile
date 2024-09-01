@@ -1,13 +1,16 @@
 # Use Ubuntu 20.04 as the base image
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 # Set environment variables for non-interactive installation
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 
 # Set environment variables for R installation
-ENV R_VERSION=4.1.0
+ENV R_VERSION=4.4.1
 ENV R_PAPERSIZE=letter
+
+# Add the docker user and create a home directory
+RUN useradd -m docker && usermod -aG staff docker
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -15,9 +18,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
     git \
+    gfortran \
+    gcc \
+    g++ \
     libcurl4-openssl-dev \
     libssl-dev \
     libxml2-dev \
+    libreadline-dev \
+    lib32readline8 \
+    lib32readline-dev \
     make \
     pkg-config \
     python3 \
@@ -28,6 +37,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     unzip \
     wget \
     zlib1g-dev \
+    tzdata \
  && rm -rf /var/lib/apt/lists/*
 
 # Upgrade pip
@@ -37,18 +47,14 @@ RUN pip3 install --upgrade pip
 WORKDIR /root/local/src
 
 # Download and install R using the specified version from ENV
-# update indices
-RUN apt update -qq
-# install two helper packages we need
-RUN apt install --no-install-recommends software-properties-common dirmngr
-# add the signing key (by Michael Rutter) for these repos
-# To verify key, run gpg --show-keys /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
-# Fingerprint: E298A3A825C0D65DFD57CBB651716619E084DAB9
-RUN wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
-# add the R 4.0 repo from CRAN -- adjust 'focal' to 'groovy' or 'bionic' as needed
-RUN  add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
 
-RUN apt install --no-install-recommends r-base
+RUN wget --timestamping https://cran.r-project.org/src/base/R-4/R-4.4.1.tar.gz
+RUN tar zxf R-4.4.1.tar.gz
+RUN cd R-4.4.1
+RUN ./configure
+RUN make
+RUN make install
+
 
 # Set the installed R binary in the PATH
 ENV PATH="/root/local/${R_VERSION}/bin:${PATH}"
