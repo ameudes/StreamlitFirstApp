@@ -47,7 +47,7 @@ WORKDIR /root/local/src
 RUN wget --timestamping https://cran.r-project.org/src/base/R-4/R-4.4.1.tar.gz
 RUN tar zxf R-4.4.1.tar.gz
 RUN cd R-4.4.1
-RUN ls -alh
+RUN file="$(ls -alh)" && echo $file
 RUN chmod +x configure 
 RUN ./configure
 RUN make
