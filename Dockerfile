@@ -1,8 +1,11 @@
+# Use Ubuntu 20.04 as the base image
 FROM ubuntu:20.04
 
-ENV R_VERSION 4.1.0
+# Set environment variables for R installation
+ENV R_VERSION=4.1.0
 ENV R_PAPERSIZE=letter
 
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     ca-certificates \
@@ -23,28 +26,37 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     zlib1g-dev \
  && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --upgrade pip 
+# Upgrade pip
+RUN pip3 install --upgrade pip
 
+# Set the working directory
 WORKDIR /root/local/src
 
-# download and install R using the specified version
-RUN wget --timestamping https://cloud.r-project.org/src/base/R-${R_VERSION%.*}/R-${R_VERSION}.tar.gz && \
-    tar zxf R-${R_VERSION}.tar.gz && \
-    cd R-${R_VERSION} && \
-    ./configure --prefix=/root/local/${R_VERSION} && \
+# Download and install R using the specified version from ENV
+RUN wget --timestamping https://cloud.r-project.org/src/base/R-4.1/R-4.1.0.tar.gz && \
+    tar zxf R-4.1.0.tar.gz && \
+    cd R-4.1.0 && \
+    ./configure --prefix=/root/local/4.1.0 && \
     make && \
-    rm -rf /root/local/${R_VERSION} && \
     make install
 
-# set the installed R bin in the PATH
+# Set the installed R binary in the PATH
 ENV PATH="/root/local/${R_VERSION}/bin:${PATH}"
 
-# install the randomForest package version 4.7-1.1
+# Install the specific version of the randomForest package
 RUN R -e "install.packages('https://cran.r-project.org/src/contrib/Archive/randomForest/randomForest_4.7-1.1.tar.gz', repos=NULL, type='source')"
 
-# install & run streamlit app
+# Set the working directory for the Streamlit app
+WORKDIR /app
+
+# Copy the application code
 COPY ./app .
-RUN python -m pip install --upgrade pip
-RUN python -m pip install -r requirements.txt
+
+# Install Python dependencies
+RUN pip install -r requirements.txt
+
+# Expose the port Streamlit will run on
 EXPOSE 8501
+
+# Run the Streamlit app
 CMD ["streamlit", "run", "app.py"]
