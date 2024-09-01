@@ -1,6 +1,10 @@
 # Use Ubuntu 20.04 as the base image
 FROM ubuntu:20.04
 
+# Set environment variables for non-interactive installation
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Etc/UTC
+
 # Set environment variables for R installation
 ENV R_VERSION=4.1.0
 ENV R_PAPERSIZE=letter
