@@ -1,11 +1,23 @@
 FROM python:3.9.7-bullseye
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    r-base \
-    r-base-dev \
-    libffi-dev \
-    libssl-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update \
+        && apt-get install -y --no-install-recommends \
+                libopenblas0-pthread \
+		littler \
+                r-cran-littler \
+		r-base=4.1.0 \
+		r-base-dev=4.1.0 \
+        r-base-core=4.1.0\
+		r-recommended=4.1.0 \
+	&& ln -s /usr/lib/R/site-library/littler/examples/install.r /usr/local/bin/install.r \
+	&& ln -s /usr/lib/R/site-library/littler/examples/install2.r /usr/local/bin/install2.r \
+	&& ln -s /usr/lib/R/site-library/littler/examples/installBioc.r /usr/local/bin/installBioc.r \
+	&& ln -s /usr/lib/R/site-library/littler/examples/installDeps.r /usr/local/bin/installDeps.r \
+	&& ln -s /usr/lib/R/site-library/littler/examples/installGithub.r /usr/local/bin/installGithub.r \
+	&& ln -s /usr/lib/R/site-library/littler/examples/testInstalled.r /usr/local/bin/testInstalled.r \
+	&& install.r docopt \
+	&& rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
+	&& rm -rf /var/lib/apt/lists/*
 
     
 # Définir la variable d'environnement R_HOME
