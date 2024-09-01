@@ -40,7 +40,7 @@ RUN pip3 install --upgrade pip
 WORKDIR /root/local/src
 
 # Download and install R using the specified version from ENV
-RUN wget --timestamping https://cloud.r-project.org/src/base/R-4.1/R-4.4.1.tar.gz && \
+RUN wget --timestamping https://cran.r-project.org/src/base/R-4/R-4.4.1.tar.gz && \
     tar zxf R-4.4.1.tar.gz && \
     cd R-4.4.1 && \
     ./configure --prefix=/root/local/4.4.1 && \
