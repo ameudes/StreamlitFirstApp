@@ -60,6 +60,7 @@ RUN apt install --no-install-recommends software-properties-common dirmngr
 RUN wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
 # add the R 4.0 repo from CRAN -- adjust 'focal' to 'groovy' or 'bionic' as needed
 RUN add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+RUN apt install --no-install-recommends r-base
 
 # Set the installed R binary in the PATH
 ENV PATH="/root/local/${R_VERSION}/bin:${PATH}"
