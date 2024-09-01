@@ -48,6 +48,18 @@ WORKDIR /root/local/src
 
 # Download and install R using the specified version from ENV
 
+#Partie ajoutée
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    wget \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libxml2-dev \
+    autoconf \
+    automake \
+    libtool
+#Fin partie ajoutée
+
 RUN wget --timestamping https://cran.r-project.org/src/base/R-4/R-4.4.1.tar.gz
 RUN tar zxf R-4.4.1.tar.gz
 RUN cd R-4.4.1
