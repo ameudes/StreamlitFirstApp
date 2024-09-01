@@ -73,9 +73,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     xz-dev \
     pcre2 \
     pcre2-dev \
-    libcurl \
-    libcurl-dev \
-    libcurl4-openssl-dev
+    libcurl 
     
 
 RUN wget https://cran.r-project.org/src/base/R-4/R-4.1.0.tar.gz
