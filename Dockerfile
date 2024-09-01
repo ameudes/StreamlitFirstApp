@@ -38,9 +38,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-wheel \
     unzip \
     wget \
-    zlib1g-dev \
     tzdata \
  && rm -rf /var/lib/apt/lists/*
+
+RUN ln -s /usr/lib/apt/methods/gzip /usr/lib/apt/methods/bzip2
+RUN apt-get install bzip2
 
 # Upgrade pip
 RUN pip3 install --upgrade pip
