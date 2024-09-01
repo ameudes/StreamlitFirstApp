@@ -46,7 +46,7 @@ WORKDIR /root/local/src
 RUN wget --timestamping https://cran.r-project.org/src/base/R-4/R-4.4.1.tar.gz
 RUN tar zxf R-4.4.1.tar.gz
 RUN cd R-4.4.1
-RUN ./configure --prefix=/root/local/4.4.1
+RUN ./configure
 RUN make
 RUN make install
 
