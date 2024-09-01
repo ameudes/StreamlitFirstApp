@@ -16,7 +16,8 @@
 	# Download Python source code from official site and build it
 	RUN wget https://www.python.org/ftp/python/3.10.0/Python-3.10.0.tgz
 	RUN tar -zxvf Python-3.10.0.tgz
-	RUN cd Python-3.10.0 && ./configure --prefix=/opt/python3.10 && make && make install
+	RUN cd Python-3.10.0 \ 
+ 		&& ./configure --prefix=/opt/python3.10 && make && make install
 
 	# Delete the python source code and temp files
 	RUN rm Python-3.10.0.tgz
