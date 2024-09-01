@@ -57,7 +57,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libtool \
     gfortran \
     gcc \
-    libcurl \   
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
     
