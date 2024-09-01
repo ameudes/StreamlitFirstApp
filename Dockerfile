@@ -1,4 +1,6 @@
 FROM python:3.10.14-bullseye
+ENV R_VERSION=4.1.0
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     r-base \
     r-base-dev \
@@ -9,7 +11,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 
 # Définir la variable d'environnement R_HOME
-ENV R_VERSION=4.1.0
 ENV R_HOME /usr/lib/R
 ENV PATH="${R_HOME}/bin:${PATH}"
 
