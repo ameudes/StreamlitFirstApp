@@ -1,5 +1,7 @@
 FROM python:3.10.14-bullseye
+ENV R_BASE_VERSION 4.1.0
 ENV R_VERSION=4.1.0
+
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     r-base \
