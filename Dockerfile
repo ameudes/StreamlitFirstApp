@@ -79,7 +79,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     
 
 
-RUN wget --https://cran.r-project.org/src/base/R-4/R-4.1.0.tar.gz
+RUN wget https://cran.r-project.org/src/base/R-4/R-4.1.0.tar.gz
 RUN tar zxf R-4.1.0.tar.gz
 RUN cd R-4.1.0
 RUN ./configure
