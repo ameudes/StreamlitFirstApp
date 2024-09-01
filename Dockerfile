@@ -39,6 +39,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     unzip \
     wget \
     tzdata \
+    liblzma-dev \
+    libcurl4-openssl-dev \
  && rm -rf /var/lib/apt/lists/*
 
 RUN ln -s /usr/lib/apt/methods/gzip /usr/lib/apt/methods/bzip2
