@@ -75,9 +75,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     pcre2-dev \
     libcurl \
     libcurl-dev \
-    libcurl4-openssl-dev\
+    libcurl4-openssl-dev
     
-
 
 RUN wget https://cran.r-project.org/src/base/R-4/R-4.1.0.tar.gz
 RUN tar zxf R-4.1.0.tar.gz
@@ -94,6 +93,7 @@ ENV PATH="/root/local/${R_VERSION}/bin:${PATH}"
 
 # Install the specific version of the randomForest package
 RUN R -e "install.packages('https://cran.r-project.org/src/contrib/Archive/randomForest/randomForest_4.7-1.1.tar.gz', repos=NULL, type='source')"
+
 
 # Set the working directory for the Streamlit app
 WORKDIR /app
