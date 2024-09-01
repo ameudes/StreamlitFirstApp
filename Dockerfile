@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 
 # Set environment variables for R installation
-ENV R_VERSION=4.4.1
+ENV R_VERSION=4.1.0
 ENV R_PAPERSIZE=letter
 
 # Add the docker user and create a home directory
@@ -46,9 +46,6 @@ RUN pip3 install --upgrade pip
 # Set the working directory
 WORKDIR /root/local/src
 
-# Download and install R using the specified version from ENV
-
-#Partie ajoutée
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     wget \
@@ -59,16 +56,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     automake \
     libtool
 
-# Copier les fichiers source de R dans le conteneur
-COPY R /tmp/R-4.1.2
 
-# Compilation et installation de R à partir des sources locales
-RUN cd /tmp/R-4.1.2 && \
-    ./configure --prefix=/usr/local && \
-    make && \
-    make install
-
-#Fin partie ajoutée
+RUN wget --timestamping https://cran.r-project.org/src/base/R-4/R-4.1.0.tar.gz
+RUN tar zxf R-4.1.0.tar.gz
+RUN cd R-4.1.0
+RUN ./configure
+RUN make
+RUN make install
 
 
 
