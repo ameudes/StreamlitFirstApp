@@ -48,6 +48,7 @@ RUN wget --timestamping https://cran.r-project.org/src/base/R-4/R-4.4.1.tar.gz
 RUN tar zxf R-4.4.1.tar.gz
 RUN cd R-4.4.1
 RUN chmod +x configure 
+RUN ls -alh
 RUN ./configure
 RUN make
 RUN make install
