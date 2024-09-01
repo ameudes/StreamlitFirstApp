@@ -17,7 +17,9 @@ RUN R --version
 RUN R -e "print('R is installed and working')"
 
 # Installer le package  directement via R
-RUN R -e "install.packages('randomForest', repos='http://cran.rstudio.com/')"
+RUN R -e "install.packages('devtools', repos='http://cran.rstudio.com/')"
+RUN R -e "devtools::install_github('cran/randomForest')"
+
 
 
 WORKDIR app/
