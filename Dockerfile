@@ -99,10 +99,10 @@ RUN pip3 install --upgrade pip
 WORKDIR /app
 
 # Install Python dependencies from requirements.txt
-RUN pip3 install -r app/requirements.txt
+RUN pip3 install -r requirements.txt
 
 # Expose Streamlit port (default: 8501)
 EXPOSE 8501
 
 # Run Streamlit application (entry point might differ)
-CMD ["streamlit", "run", "app/app.py"]
+CMD ["streamlit", "run", "app.py"]
