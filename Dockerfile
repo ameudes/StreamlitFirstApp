@@ -1,77 +1,100 @@
-# Use Ubuntu 20.04 as the base image
+# Use Ubuntu 22.04 as the base image
 FROM ubuntu:22.04
-# Set environment variables for non-interactive installation
+
+# Set environment variable to avoid interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=Etc/UTC
 
-# Set environment variables for R installation
-ENV R_VERSION=4.1.0
-ENV R_PAPERSIZE=letter
+# Update package lists
+RUN apt-get update
 
-# Add the docker user and create a home directory
-# Set the working directory
-WORKDIR /root/local/src
+# Install build essentials and development libraries
+RUN apt-get install -y \
+  build-essential \
+  software-properties-common \
+  libreadline-dev \
+  gfortran \
+  tcl-dev \
+  tk-dev \
+  uuid-dev \
+  lzma-dev \
+  liblzma-dev \
+  libssl-dev \
+  libsqlite3-dev \
+  xorg \
+  openbox \
+  libx11-dev \
+  libxext-dev \
+  libxft-dev \
+  libxrender-dev \
+  bzip2 \
+  libbz2-dev \
+  libcurl4-openssl-dev \
+  python3 \
+  texinfo \
+  texlive \
+  texlive-fonts-extra
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    ca-certificates \
-    curl \
-    git \
-    gfortran \
-    gcc \
-    g++ \
-    zlib1g \
-    zlib1g-dev \
-    libcurl4-openssl-dev \
-    libssl-dev \
-    libxml2-dev \
-    libreadline-dev \
-    lib32readline8 \
-    lib32readline-dev \
-    make \
-    pkg-config \
-    python3 \
-    python3-dev \
-    python3-pip \
-    python3-setuptools \
-    python3-wheel \
-    unzip \
-    wget \
-    tzdata \
-    liblzma-dev \
-    libcurl4-openssl-dev \
- && rm -rf /var/lib/apt/lists/*
+# Add Ondřej's PHP repository
+RUN add-apt-repository ppa:ondrej/php
 
-RUN ln -s /usr/lib/apt/methods/gzip /usr/lib/apt/methods/bzip2
-RUN apt-get install bzip2
+# Update package lists again and install PCRE libraries
+RUN apt-get update && apt-get install -y libpcre3 libpcre3-dev
+
+# Download, compile, and install PCRE2
+RUN \
+  wget https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.42/pcre2-10.42.tar.gz && \
+  tar -zxvf pcre2-10.42.tar.gz && \
+  cd pcre2-10.42 && \
+  ./configure && \
+  make -j $(nproc) && \
+  make install && \
+  cd ..
+
+# Download, compile, and install R (without X support)
+RUN \
+  wget --timestamping https://cran.r-project.org/src/base/R-4/R-4.4.1.tar.gz && \
+  tar zxf R-4.4.1.tar.gz && \
+  cd R-4.4.1 && \
+  ./configure --without-x --enable-R-shlib && \
+  make -j $(nproc) && \
+  make install && \
+  cd ..
+
+# Clean up temporary build directories (optional)
+# RUN rm -rf R-4.4.1 pcre2-10.42
+
+# Set environment variables for R
+ENV R_HOME=/usr/local/lib/R
+RUN echo "${LD_LIBRARY_PATH}:${python3 -m rpy2.situation LD_LIBRARY_PATH}" > /etc/ld.so.conf.d/rpy2.conf 
+RUN ldconfig
+
+# Install R package RCurl from RStudio repository
+RUN R -e "install.packages('RCurl', repos='https://cran.rstudio.com/')"
+
+# Install R package randomForest from source
+RUN R -e 'install.packages("https://cran.r-project.org/src/contrib/randomForest_4.7-1.1.tar.gz", repos=NULL, type="source")'
+
+# Clone Streamlit application repository
+RUN git clone https://github.com/ameudes/StreamlitFirstApp StreamlitFirstApp
+
+# Create a virtual environment for Python
+WORKDIR /app/StreamlitFirstApp
+RUN python3 -m venv .venv
+
+# Set ownership of the virtual environment for the user
+RUN chown -R ${USER}:${USER} .venv/
+
+# Activate the virtual environment
+RUN source .venv/bin/activate
 
 # Upgrade pip
 RUN pip3 install --upgrade pip
 
-# Set the working directory
-WORKDIR /root/local/src
+# Install Python dependencies from requirements.txt
+RUN pip3 install -r app/requirements.txt
 
-
-RUN wget --timestamping https://cran.r-project.org/src/base/R-4/R-4.1.0.tar.gz
-RUN tar zxf R-4.1.0.tar.gz
-RUN cd R-4.1.0
-RUN ./configure
-RUN make
-RUN make install
-
-
-
-# Set the installed R binary in the PATH
-ENV PATH="/root/local/${R_VERSION}/bin:${PATH}"
-# Install the specific version of the randomForest package
-RUN R -e "install.packages('https://cran.r-project.org/src/contrib/Archive/randomForest/randomForest_4.7-1.1.tar.gz', repos=NULL, type='source')"
-# Set the working directory for the Streamlit app
-WORKDIR /app
-# Copy the application code
-COPY ./app .
-# Install Python dependencies
-RUN pip install -r requirements.txt
-# Expose the port Streamlit will run on
+# Expose Streamlit port (default: 8501)
 EXPOSE 8501
-# Run the Streamlit app
-CMD ["streamlit", "run", "app.py"]
+
+# Run Streamlit application (entry point might differ)
+CMD ["streamlit", "run", "app/app.py"]
