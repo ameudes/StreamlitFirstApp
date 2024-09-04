@@ -14,9 +14,42 @@ WORKDIR /root/local/src
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
+    ca-certificates \
+    curl \
+    git \
+    gfortran \
+    gcc \
+    g++ \
+    zlib1g \
+    zlib1g-dev \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libxml2-dev \
+    libreadline-dev \
+    lib32readline8 \
+    lib32readline-dev \
+    make \
+    pkg-config \
+    python3 \
+    python3-dev \
+    python3-pip \
+    python3-setuptools \
+    python3-wheel \
+    unzip \
     wget \
-	automake \
-    libtool
+    tzdata \
+    liblzma-dev \
+    libcurl4-openssl-dev \
+ && rm -rf /var/lib/apt/lists/*
+
+RUN ln -s /usr/lib/apt/methods/gzip /usr/lib/apt/methods/bzip2
+RUN apt-get install bzip2
+
+# Upgrade pip
+RUN pip3 install --upgrade pip
+
+# Set the working directory
+WORKDIR /root/local/src
 
 
 RUN wget --timestamping https://cran.r-project.org/src/base/R-4/R-4.1.0.tar.gz
