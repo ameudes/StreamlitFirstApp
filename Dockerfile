@@ -1,6 +1,10 @@
 # Use Ubuntu 22.04 as the base image
 FROM ubuntu:22.04
 
+COPY app /app
+
+SHELL ["/bin/bash", "-c"]
+
 # Set environment variable to avoid interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -9,6 +13,7 @@ RUN apt-get update
 
 # Install build essentials and development libraries
 RUN apt-get install -y \
+  wget \
   build-essential \
   software-properties-common \
   libreadline-dev \
@@ -30,6 +35,8 @@ RUN apt-get install -y \
   libbz2-dev \
   libcurl4-openssl-dev \
   python3 \
+  python3-pip \
+  python3.10-venv \
   texinfo \
   texlive \
   texlive-fonts-extra
@@ -61,12 +68,11 @@ RUN \
   cd ..
 
 # Clean up temporary build directories (optional)
-# RUN rm -rf R-4.4.1 pcre2-10.42
+RUN rm -rf R-4.4.1 pcre2-10.42 R-4.4.1.tar.gz pcre2-10.42.tar.gz
 
 # Set environment variables for R
-ENV R_HOME=/usr/local/lib/R
-RUN echo "${LD_LIBRARY_PATH}:${python3 -m rpy2.situation LD_LIBRARY_PATH}" > /etc/ld.so.conf.d/rpy2.conf 
-RUN ldconfig
+ENV R_HOME="/usr/local/lib/R"
+ENV LD_LIBRARY_PATH="/usr/local/lib/R/lib:/usr/local/lib:/usr/lib/x86_64-linux-gnu"
 
 # Install R package RCurl from RStudio repository
 RUN R -e "install.packages('RCurl', repos='https://cran.rstudio.com/')"
@@ -75,10 +81,9 @@ RUN R -e "install.packages('RCurl', repos='https://cran.rstudio.com/')"
 RUN R -e 'install.packages("https://cran.r-project.org/src/contrib/randomForest_4.7-1.1.tar.gz", repos=NULL, type="source")'
 
 # Clone Streamlit application repository
-RUN git clone https://github.com/ameudes/StreamlitFirstApp StreamlitFirstApp
+# RUN git clone https://github.com/ameudes/StreamlitFirstApp StreamlitFirstApp
 
 # Create a virtual environment for Python
-WORKDIR /app/StreamlitFirstApp
 RUN python3 -m venv .venv
 
 # Set ownership of the virtual environment for the user
@@ -89,6 +94,9 @@ RUN source .venv/bin/activate
 
 # Upgrade pip
 RUN pip3 install --upgrade pip
+
+# Go in app
+WORKDIR /app
 
 # Install Python dependencies from requirements.txt
 RUN pip3 install -r app/requirements.txt
