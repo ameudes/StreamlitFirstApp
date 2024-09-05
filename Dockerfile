@@ -33,6 +33,7 @@ RUN apt-get install -y \
   libxrender-dev \
   bzip2 \
   libbz2-dev \
+  libpq-dev \
   libcurl4-openssl-dev \
   python3 \
   python3-pip \
