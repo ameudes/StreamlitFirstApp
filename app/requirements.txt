@@ -4,3 +4,4 @@ rpy2==3.5.1
 pandas==2.2.1
 sqlalchemy==2.0.29
 datetime
+psycopg2-binary
