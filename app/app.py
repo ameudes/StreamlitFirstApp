@@ -143,7 +143,7 @@ with col2:
 if evaluer:   
     
     # Vérification des champs obligatoires
-    if plaquette == 0.0 or pct == 0.0 :
+    if plaquette == 0.0 or pct == 0.0 or age== 0 :
         st.error("Veuillez remplir les champs :  Plaquettes (nb/mm3) et PCT (μg/L)")
     else:
     
@@ -160,7 +160,7 @@ if evaluer:
 
         df = pd.DataFrame(data)
         path="random_forest.rds"
-        st.write("Probabilité de paludisme :", response_prob(path, formatting(df)))
+        st.write("Probabilité de paludisme :", response_prob(path, formatting(df))*100)
         if response_prob(path, formatting(df))>=0.5 : 
             st.write("<span style='color:red'>En faveur d'un accès palustre : Oui</span>", unsafe_allow_html=True)
             if pct>=6.17 : 
@@ -180,7 +180,7 @@ if soumission:
 if st.session_state.get('submitted'):
     
     # Vérification des champs obligatoires
-    if plaquette == 0.0 or pct == 0.0 :
+    if plaquette == 0.0 or pct == 0.0 or age==0.0:
         st.error("Veuillez remplir les champs :  Plaquettes (nb/mm3) et PCT (μg/L)")
     
     else: 
