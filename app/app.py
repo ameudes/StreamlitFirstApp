@@ -115,7 +115,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""<h2 class="big-font">Veuillez entrer les informations cliniques du patient :  </h2>
+st.markdown("""<h2 class="big-font">Veuillez entrer les informations du patient :  </h2>
             """, unsafe_allow_html=True)
 
 # Champs de saisie des caractéristiques cliniques
