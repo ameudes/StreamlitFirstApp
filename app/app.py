@@ -136,9 +136,9 @@ soumission = st.button("Soumettre") # Bouton pour soumettre les informations
 if evaluer:   
     
     # Vérification des champs obligatoires
-    if plaquette == 0.0 or pct == 0.0 or age== 0 :
-        st.error("Veuillez remplir les champs :  Plaquettes (nb/mm3) et PCT (μg/L)")
-    else:
+    if plaquette == 0.0 or pct == 0.0 or age== 0.0:
+        st.error("Veuillez remplir les champs :  Plaquettes (nb/mm3), PCT (μg/L) et Âge")
+    else: 
     
     # Stockage des données dans un DataFrame
         data = {
@@ -153,16 +153,16 @@ if evaluer:
 
         df = pd.DataFrame(data)
         path="random_forest.rds"
-        st.write("Probabilité de paludisme :", response_prob(path, formatting(df))*100)
+        st.write("Probabilité de paludisme :", response_prob(path, formatting(df))*100,"%")
         if response_prob(path, formatting(df))>=0.5 : 
-            st.write("<span style='color:red; font-size:24px;'>En faveur d'un accès palustre : Oui</span>", unsafe_allow_html=True)
+            st.write("<span style='color:red; font-size:24px'>En faveur d'un accès palustre : Oui</span>", unsafe_allow_html=True)
             if pct>=6.17 : 
-                st.write("<span style='color:red;font-size:24px;>Risque d'accès grave : Oui</span>", unsafe_allow_html=True)
+                st.write("<span style='color:red; font-size:24px>Risque d'accès grave : Oui</span>", unsafe_allow_html=True)
             else: 
-                st.write("<span style='color:red';font-size:24px;>Risque d'accès grave : Non</span>", unsafe_allow_html=True)
+                st.write("<span style='color:red'; font-size:24px>Risque d'accès grave : Non</span>", unsafe_allow_html=True)
             
         else:
-            st.write("<span style='color:green';font-size:24px;>En faveur d'un accès palustre : Non</span>", unsafe_allow_html=True)
+            st.write("<span style='color:green';font-size:24px>En faveur d'un accès palustre : Non</span>", unsafe_allow_html=True)
 
     
     
@@ -174,7 +174,7 @@ if st.session_state.get('submitted'):
     
     # Vérification des champs obligatoires
     if plaquette == 0.0 or pct == 0.0 or age==0.0:
-        st.error("Veuillez remplir les champs :  Plaquettes (nb/mm3) et PCT (μg/L)")
+        st.error("Veuillez remplir les champs :  Plaquettes (nb/mm3), PCT (μg/L) et Âge")
     
     else: 
         st.markdown("""<h2 class="big-font">Quel est le statut du patient ? </h2>
