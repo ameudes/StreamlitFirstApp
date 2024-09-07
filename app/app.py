@@ -22,7 +22,7 @@ r('library')('randomForest') #Nécessaire de charger la library randomForest dan
 
 ## Fonction d'insertion des données
 
-def inserer (a,b,c,d,e,f,g,h,i,j):
+def inserer (cod,a,b,c,d,e,f,g,h,i,j):
     
     
     #Mise en place de la connexion à la base de donnée   
@@ -40,10 +40,11 @@ def inserer (a,b,c,d,e,f,g,h,i,j):
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    class Test(Base):
-        __tablename__ = 'test'
+    class Donnees(Base):
+        __tablename__ = 'collecte'
 
         id = Column(Integer, primary_key=True)
+        cod=Column(Float)
         Age = Column(Integer)
         DSC = Column(Integer)
         Hbj1 = Column(Float)
@@ -56,7 +57,7 @@ def inserer (a,b,c,d,e,f,g,h,i,j):
         DateTime = Column(String(60))
         
     # L'objet class Test prêt pour insertion dans la bd
-    data= Test(Age=a,DSC=b, Hbj1=c, plaquettes=d, CRP=e,PCT=f,Temp=g, modele=h,test_clinique=i,DateTime=j)
+    data= Donnees(Age=a,DSC=b, Hbj1=c, plaquettes=d, CRP=e,PCT=f,Temp=g, modele=h,test_clinique=i,DateTime=j,cod=code)
     session.add_all([data])
     session.commit()
 
@@ -208,7 +209,7 @@ if st.session_state.get('submitted'):
             now = datetime.now()
                 
             #insertion dans la base de données
-            inserer(age,duree,hbj1,plaquette,crp,pct,temp,result,radio(resultat_reel),now.strftime("%d/%m/%Y %H:%M:%S"))
+            inserer(age,duree,hbj1,plaquette,crp,pct,temp,result,radio(resultat_reel),now.strftime("%d/%m/%Y %H:%M:%S"),)
                 
             st.success("Informations enregistrées!", icon="✅")
         
