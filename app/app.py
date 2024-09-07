@@ -100,7 +100,7 @@ st.markdown("""
 <style>
 .big-font {
     font-size:25px !important;
-    color: black;
+    color: green;
 }
 .stNumberInput input, .stSelectbox box, .stRadio radio {
     border: none;
@@ -119,26 +119,19 @@ st.markdown("""<h2 class="big-font">Veuillez entrer les informations du patient 
             """, unsafe_allow_html=True)
 
 # Champs de saisie des caractéristiques cliniques
-col1, col2 = st.columns(2)
+age = st.number_input("Âge en mois*", min_value=0.0, max_value=216.0, value=0.0, key="age")
+duree = st.number_input("Durée Symptômes - Consultation (en jours)", min_value=0.0, key="duree")
+hbj1 = st.number_input("HbJ1 (g/dl)", min_value=0.0, key="hbj1")
+plaquette = st.number_input("Plaquettes (nb/mm3) *", min_value=0.0, key="plaquette")   
+crp= st.number_input("CRP (mmg/L)", min_value=0.0, key="crp")
+pct = st.number_input("PCT (μg/L) *", min_value=0.0,value=0.0, key="pct")
+temp= st.number_input("Température (°C)", min_value=0.0, value=0.0, key="temp")
+st.write("")
+st.write("")
 
-with col1:
-    age = st.number_input("Âge en mois*", min_value=0.0, max_value=120.0, value=2.0, key="age")
-    duree = st.number_input("Durée Symptômes - Consultation (en jours)", min_value=0.0, key="duree")
-    hbj1 = st.number_input("HbJ1 (g/dl)", min_value=0.0, key="hbj1")
-    plaquette = st.number_input("Plaquettes (nb/mm3) *", min_value=0.0, key="plaquette")
-    evaluer = st.button("Evaluer") # Bouton pour évaluer la probabilité
-    st.write("Puis")
-    soumission = st.button("Soumettre") # Bouton pour soumettre les informations
-    
-
-with col2:
-    crp= st.number_input("CRP (mmg/L)", min_value=0.0, key="crp")
-    pct = st.number_input("PCT (μg/L) *", min_value=0.0,value=0.0, key="pct")
-    temp= st.number_input("Température (°C)", min_value=0.0, value=36.0, key="temp")
-    st.write("")
-    st.write("")
-
-
+evaluer = st.button("Evaluer") # Bouton pour évaluer la probabilité
+st.write("Puis")
+soumission = st.button("Soumettre") # Bouton pour soumettre les informations
 
 if evaluer:   
     
@@ -162,14 +155,14 @@ if evaluer:
         path="random_forest.rds"
         st.write("Probabilité de paludisme :", response_prob(path, formatting(df))*100)
         if response_prob(path, formatting(df))>=0.5 : 
-            st.write("<span style='color:red'>En faveur d'un accès palustre : Oui</span>", unsafe_allow_html=True)
+            st.write("<span style='color:red; font-size:24px;'>En faveur d'un accès palustre : Oui</span>", unsafe_allow_html=True)
             if pct>=6.17 : 
-                st.write("<span style='color:red'>Risque d'accès grave : Oui</span>", unsafe_allow_html=True)
+                st.write("<span style='color:red;font-size:24px;>Risque d'accès grave : Oui</span>", unsafe_allow_html=True)
             else: 
-                st.write("<span style='color:red'>Risque d'accès grave : Non</span>", unsafe_allow_html=True)
+                st.write("<span style='color:red';font-size:24px;>Risque d'accès grave : Non</span>", unsafe_allow_html=True)
             
         else:
-            st.write("<span style='color:green'>En faveur d'un accès palustre : Non</span>", unsafe_allow_html=True)
+            st.write("<span style='color:green';font-size:24px;>En faveur d'un accès palustre : Non</span>", unsafe_allow_html=True)
 
     
     
