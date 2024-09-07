@@ -44,7 +44,7 @@ def inserer (code,a,b,c,d,e,f,g,h,i,j):
         __tablename__ = 'collecte'
 
         id = Column(Integer, primary_key=True)
-        cod=Column(Float)
+        code=Column(Float)
         Age = Column(Integer)
         DSC = Column(Integer)
         Hbj1 = Column(Float)
@@ -57,7 +57,7 @@ def inserer (code,a,b,c,d,e,f,g,h,i,j):
         DateTime = Column(String(60))
         
     # L'objet class Test prêt pour insertion dans la bd
-    data= Donnees(cod=code,Age=a,DSC=b, Hbj1=c, plaquettes=d, CRP=e,PCT=f,Temp=g, modele=h,test_clinique=i,DateTime=j)
+    data= Donnees(code=code,Age=a,DSC=b, Hbj1=c, plaquettes=d, CRP=e,PCT=f,Temp=g, modele=h,test_clinique=i,DateTime=j)
     session.add_all([data])
     session.commit()
 
