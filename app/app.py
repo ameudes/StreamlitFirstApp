@@ -91,6 +91,9 @@ def affichage(input):
 # Mise en place de l'interface
 import streamlit as st
 import pandas as pd
+import random
+import string   
+
 pd.DataFrame.iteritems = pd.DataFrame.items
 
 # Titre de l'application
@@ -119,6 +122,7 @@ st.markdown("""<h2 class="big-font">Veuillez entrer les informations du patient 
             """, unsafe_allow_html=True)
 
 # Champs de saisie des caractéristiques cliniques
+code=st.text_input("Code d'enregistrement", value=''.join(random.choices(string.digits, k=4))+''.join(random.choices(string.ascii_uppercase, k=2)), disabled=True)
 age = st.number_input("Âge en mois*", min_value=0.0, max_value=216.0, value=0.0, key="age")
 duree = st.number_input("Durée Symptômes - Consultation (en jours)", min_value=0.0, key="duree")
 hbj1 = st.number_input("HbJ1 (g/dl)", min_value=0.0, key="hbj1")
@@ -157,12 +161,12 @@ if evaluer:
         if response_prob(path, formatting(df))>=0.5 : 
             st.write("<span style='color:red; font-size:24px'>En faveur d'un accès palustre : Oui</span>", unsafe_allow_html=True)
             if pct>=6.17 : 
-                st.write("<span style='color:red; font-size:24px>Risque d'accès grave : Oui</span>", unsafe_allow_html=True)
+                st.write("<span style='color:red; font-size:24px'>Risque d'accès grave : Oui</span>", unsafe_allow_html=True)
             else: 
-                st.write("<span style='color:red'; font-size:24px>Risque d'accès grave : Non</span>", unsafe_allow_html=True)
+                st.write("<span style='color:red; font-size:24px'>Risque d'accès grave : Non</span>", unsafe_allow_html=True)
             
         else:
-            st.write("<span style='color:green';font-size:24px>En faveur d'un accès palustre : Non</span>", unsafe_allow_html=True)
+            st.write("<span style='color:green;font-size:24px'>En faveur d'un accès palustre : Non</span>", unsafe_allow_html=True)
 
     
     
