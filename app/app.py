@@ -93,7 +93,7 @@ def affichage(input):
 import streamlit as st
 import pandas as pd
 import random 
-code_en=random.randint(1, 10000)
+st.session_state.code_en = random.randint(1, 10000)  
 pd.DataFrame.iteritems = pd.DataFrame.items
 
 # Titre de l'application
@@ -122,7 +122,7 @@ st.markdown("""<h2 class="big-font">Veuillez entrer les informations du patient 
             """, unsafe_allow_html=True)
 
 # Champs de saisie des caractéristiques cliniques
-code=st.number_input("Code d'enregistrement", value=code_en, disabled=True)
+code=st.number_input("Code d'enregistrement", value=st.session_state.code_en, disabled=True)
 age = st.number_input("Âge en mois*", min_value=0.0, max_value=216.0, value=0.0, key="age")
 duree = st.number_input("Durée Symptômes - Consultation (en jours)", min_value=0.0, key="duree")
 hbj1 = st.number_input("HbJ1 (g/dl)", min_value=0.0, key="hbj1")
