@@ -208,7 +208,7 @@ if st.session_state.get('submitted'):
             now = datetime.now()
                 
             #insertion dans la base de données
-            inserer(code,age,duree,hbj1,plaquette,crp,pct,temp,result,radio(resultat_reel),now.strftime("%d/%m/%Y %H:%M:%S"))
+            inserer(st.session_state.code_en,age,duree,hbj1,plaquette,crp,pct,temp,result,radio(resultat_reel),now.strftime("%d/%m/%Y %H:%M:%S"))
                 
             st.success("Informations enregistrées!", icon="✅")
         
