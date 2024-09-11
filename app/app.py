@@ -80,7 +80,7 @@ def response_prob(path_model,dataframe) :
 
 ## Fonction formatting de la sélection radio
 def radio(input): 
-    return 1.0 if input==":red[Paludisme] :mosquito:"else 2.0
+    return 1.0 if input==":red[Accès Palustre]"else 2.0
 
 ## Fonction formatting pour l'affichage du résultat du modèle
 def affichage(input):
