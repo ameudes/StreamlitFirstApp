@@ -15,6 +15,7 @@ r = robjects.r
 from rpy2.robjects import pandas2ri
 pandas2ri.activate()
 
+r('install.packages')('randomForest')
 r('library')('randomForest') #Nécessaire de charger la library randomForest dans l'environnement R du fait du type de modèle employé
 
 
