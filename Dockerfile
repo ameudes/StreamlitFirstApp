@@ -42,7 +42,6 @@ RUN apt-get install -y \
   texlive \
   texlive-fonts-extra
 
-RUN apt-get install -y libtool autoconf automake
 
 # Update package lists again and install PCRE libraries
 RUN apt-get update && apt-get install -y libpcre3 libpcre3-dev
