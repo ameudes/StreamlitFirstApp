@@ -42,8 +42,7 @@ RUN apt-get install -y \
   texlive \
   texlive-fonts-extra
 
-# Add Ondřej's PHP repository
-RUN add-apt-repository ppa:ondrej/php
+RUN apt-get install -y libtool autoconf automake
 
 # Update package lists again and install PCRE libraries
 RUN apt-get update && apt-get install -y libpcre3 libpcre3-dev
